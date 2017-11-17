@@ -1,0 +1,204 @@
+
+
+body {
+  background:#f0f0f0;
+  position: relative;
+  top: -40px;
+}
+.header {
+  grid-area: hd;
+  text-align: center;
+  height: 100px;
+  background-color: grey;
+  padding: 30px;
+  position: fixed;
+  right: 0;
+  left: 0;
+}
+
+.wrapper {
+  width: 800px;
+  margin: 0 auto;
+}
+
+.wrapper > {
+  position: fixed;
+  right: 0;
+  left: 0;
+  background-color: rgb(80, 79, 79);
+}
+
+ul {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+  text-align: center;
+}
+
+.wrapper > .nav > ul > li {
+  color: white;
+  padding: 0px 20px;
+ }
+
+.wrapper > .nav > ul li {
+  display: inline-block;
+}
+
+.wrapper > .nav > ul li a {
+  display: block;
+  padding: 10px 20px;
+  color: #fff;
+  border: 1px dashed #fff;
+  text-decoration: none;
+}  
+
+ul li:hover a {
+  box-shadow: 0 2px 2px 1px black;
+}
+
+div > .section {
+  padding: 180px;
+}
+
+h2 {
+  text-align: center;
+  width: auto;
+  height: 40px
+}
+
+.section {
+  display: grid;
+  grid-area: card;
+  grid-column: 2 / auto;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-gap: 20px;
+}
+
+img {
+  box-shadow: 1px 1px 2px 0px rgba(0,0,0,0.3);
+  width: 100%;
+}
+.section > .card {
+  border: 1px solid #ccc;
+  box-shadow: 2px 2px 6px 0px rgba(0,0,0,0.3);
+}
+
+.section > .card .img-box {
+  max-width: 100%;
+}
+
+.text-box {
+  padding: 20px 20px 20px;
+  box-shadow: 1px 2px 2px 0px;
+  border: 1px solid;
+  margin: 2px;
+}
+
+.text-box .btn-box {
+  background: gray;
+  border: 0px;
+  color: white;
+  padding: 10px;
+  width: 100%;
+}
+
+.text:hover {
+  background-color: #eee;
+}
+
+textarea {
+  width: 99%;
+  resize: none;
+  border: none;
+}
+
+.nav1 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-gap: 7px;
+  list-style-type: none;
+  text-align: left;
+  border: 1px solid;
+  height: 80px;
+  padding-top: 15px;
+  padding-left: 3px;
+}
+
+
+.edit {
+  grid-area: ed;
+  grid-column: 1 / 1;
+  grid-row: 1 / 1;
+  
+}
+
+.cancel {
+  grid-area: can;
+  grid-column: 2 / 2;
+  grid-row: 1 / 1;
+}
+
+.save {
+  grid-area: sav;
+  grid-column: 3 / 3;
+  grid-row: 1 / 1;
+
+}
+
+.delete {
+  grid-area: del;
+  grid-column: 1 / 1;
+  grid-row: 2 / 2;
+
+}
+
+.btn-box > .nav1 > span > a {
+  padding: 10px 20px;
+  color: black;
+   text-decoration: none;
+}  
+
+a:hover {
+  box-shadow: 1px 1px 1px 1px;
+}
+/*
+.btn-box > .nav1 > ul {
+  text-align: left;
+  padding-top: 5px;
+}
+
+
+
+.btn-box > .nav1 > ul > li a {
+  display: block;
+ }
+
+.btn-box > .nav1 > ul > li{
+  display: inline-block;
+ }
+
+ .btn-box > .nav2 > ul > li a {
+  display: block;
+  
+ }
+
+.btn-box > .nav2 > ul > li {
+  display: inline-block;
+ 
+ }*/
+
+
+
+/* .btn-box > .nav2 > ul > li a {
+  padding: 10px 20px;
+  color: black;
+  
+  text-decoration: none;
+}  */
+
+ 
+
+
+
+

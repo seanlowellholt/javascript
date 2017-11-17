@@ -1,0 +1,16 @@
+.block {
+  test-align: center;
+ }
+
+ .block__elem {
+   display: block;
+   text-align: center;
+ }
+
+ .block--elem {
+   display: inline-block;
+   margin-left: auto;
+   margin-right: auto;
+   margin-top: auto;
+   text-align: left;
+ }

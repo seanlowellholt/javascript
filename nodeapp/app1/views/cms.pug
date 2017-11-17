@@ -1,0 +1,42 @@
+extends layout
+
+block content
+  script(type="text/javascript", src="/javascripts/cms.js")
+  .container
+    .header
+      h2 CMS System
+      .wrapper
+        .nav
+          ul
+            li 
+              a(href="http://localhost:3000/cms") CMS
+            li 
+              a(href="http://localhost:3000/uploads") UPLOAD
+            li 
+              a(href="#") PLAYLIST
+            li 
+              a(href="#") CONTROL
+    .content
+      .section
+        each t in cms 
+      
+          .card
+            .img-box
+              img.image(src="../uploads/thumbs/" + (t.imageThumb))
+            |       
+            .text-box
+              textarea.text(id=(t._id) cols='36', rows='8', required='', readonly='', placeholder='Enter Description Here') #{t.description}
+            |       
+            .btn-box
+              .nav1
+                span 
+                  a.edit(name='edit', href='#') Edit
+                span
+                  a.cancel(name='cancel' href='#') Cancel
+                span
+                  a.save(name='save' href='#') Save
+                span.four
+                  a.delete(name='delete', href='#') Delete
+
+                  
+      

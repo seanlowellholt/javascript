@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title> "Sandbox" </title>
+  <link type="text/css" rel="stylesheet" href="style.css">
+</head>
+<body class="block">
+
+  <div class='block__elem'>
+      <h1>"Hello World"</h1>
+      <form class='block--elem' action="/find" method="post">
+        <label>'Sandbox Dev'</label>
+        <input type='text' name="username"></input>
+
+        <button type="Submit">Submit</input>
+      </form>
+    </div>
+    <div>
+      <form action='/find' method="get">
+      </form>
+    </div>
+    <!--<div>
+      <iframe src="views/upload.html" ></iframe>
+      <button class="block__btn-upload" formaction="/views/upload.html" type="submit" name="upload image">Upload image</button>
+    </div>-->
+    <div>
+      <form class="uploadImage" enctype="multipart/form-data" method="post" action="/uploads">
+        <input type="file" name="image" id="imageName" />
+        <input type="submit" value="Upload File" name="Submit" />
+      </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-2.2.4.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.js"></script>
+
+  </body>
+</html>

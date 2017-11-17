@@ -1,0 +1,10 @@
+extends layout
+
+block content
+
+    ul
+      li.list-id
+        each user in userlist
+          img.image-id(src="./uploads/thumbs/" + (user.imageThumb))
+          h3 headline
+          p Photo discription
