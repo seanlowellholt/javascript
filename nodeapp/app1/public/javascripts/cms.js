@@ -7,17 +7,17 @@ $(document).ready(function(event) {
       $(this).attr('id', row_id)
     })
 
-var section = $(document.querySelectorAll('.section'))
-  console.log(section)
-  section.each(function() {
-    $(this).attr('id', row_id );
-  })
-
-    var card = $(document.querySelectorAll('.card'))
-    console.log(card)
-    card.each(function() {
+  var section = $(document.querySelectorAll('.card__box'))
+    console.log(section)
+    section.each(function() {
       $(this).attr('id', row_id );
     })
+
+  var card = $(document.querySelectorAll('.card'))
+  console.log(card)
+  card.each(function() {
+    $(this).attr('id', row_id );
+  })
 
   $('.edit').on('click', editLink)
   $('.save').on('click', saveLink)
@@ -67,7 +67,7 @@ var section = $(document.querySelectorAll('.section'))
       var baseElement = ele.closest('div').parent().siblings().find('textarea')
       var valueData = baseElement.val();
       var idData = baseElement.attr('id')
-      //console.log(valueData)
+      console.log(valueData)
       $.ajax({
         url: "/save",
         type: 'post',
@@ -86,12 +86,12 @@ var section = $(document.querySelectorAll('.section'))
       var id = $(this).attr('id');
       var ele = $(document.getElementById(id));
       var baseElement = ele.closest('div').parent().siblings().find('textarea')
-      var fadeOut = ele.parents().find('.card').attr('id')
-      var loadOut = ele.parents().find('.section').attr('id')
+      var fadeOut = ele.closest('div').parents('.card__box').attr('id')
+      var loadOut = ele.closest('div').parents('.card__box').attr('id')
       var valueData = baseElement.val();
       var idData = baseElement.attr('id')
       console.log(id)
-      console.log(loadOut)
+      console.log(fadeOut)
 
       $.ajax({
         url: "/delete",
@@ -105,31 +105,10 @@ var section = $(document.querySelectorAll('.section'))
       })
 
     }
-    
-    // function getImages() {
-    //   var images = new Array;
-    //   var imageObj = localStorage.getItem('items');
-    //   if(imageObj !== null) {
-    //     images = JSON.parse(imageObj);
-    //   }
-    //   return images;
-    //  }
-
-    // function show(ids) {
-    //    var render = getImages();
-    //    for(var i = 0; i < render.length; i++) {
-    //      if(ids === render[i].id) {
-    //        //console.log(render[i].description);
-    //      }
-         
-    //    }
-    //  }
      
      function row_id() {
       var id_num = Math.random().toString(9).substr(2,3);
       var id_str = Math.random().toString(36).substr(2);
       return id_num + id_str;
     }
-
-
 })

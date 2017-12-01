@@ -1,4 +1,4 @@
-$('#upload-input').change(function(){
+$('#upload__input').change(function(){
   readImgUrlAndPreview(this);
   function readImgUrlAndPreview(input){
      if (input.files && input.files[0]) {
@@ -19,7 +19,7 @@ $('#upload-button').on('click', function(event) {
   var ele = $(document.getElementById('msg'));
   var description = ele.get(0).value;
   
-  var files = $('#upload-input').get(0).files;
+  var files = $('#upload__input').get(0).files;
   console.log(description)
   if (files.length > 0){
     // create a FormData object which will be sent as the data payload in the
