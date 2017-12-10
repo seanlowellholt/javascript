@@ -1,6 +1,17 @@
 extends layout
 
 block content
+  .head
+      span.head__title CMS System
+      .head__subnav
+        span.head__subnav-user1 account: 
+        a(class='head__subnav-logout' href='/logout') logout
+      .head__nav
+          a(class="head__nav__cms head__nav--link" href="/cms") CMS 
+          a(class="head__nav__up head__nav--link" href="/uploads") UPLOAD
+          a(class="head__nav__play head__nav--link" href="#") PLAYLIST
+          a(class="head__nav__control head__nav--link" href="#") CONTROL
+
   .upload
     <!--button.btn.btn-lg.upload-btn(type='button') Upload file-->
     

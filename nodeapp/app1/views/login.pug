@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  center
+    #loginform
+      form(id='my-form')
+        p
+          | CMS Account Login
+        
+        input#loginform__username(type="text", placeholder="username", name="username")
+        input#loginform__password(type="password", name="password", placeholder="***")
+        input#dologin(type="submit", value="Login")
+    a(class="login__register--link" href="/register") register new account
+
+      
+  
+  script(type="text/javascript", src="/javascripts/login.js")
+

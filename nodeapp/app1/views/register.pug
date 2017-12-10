@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  center
+    #loginform
+      form(id='my-form' class='collapse' action='/register' method='post')
+        p
+          | CMS Register Account
+        label New Username
+        input#regform__username(type="text", name="username")
+        label New Password
+        input#regform__password(type="password", name="password")
+        input#dologin(type="submit", value="Login")

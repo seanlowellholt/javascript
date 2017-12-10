@@ -6,32 +6,72 @@ var im = require('imagemagick');
 var path = require('path');
 var fs = require('fs');
 var ObjectId = require('mongodb').ObjectId;
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+
+var funct = require('../models/account')
+
+passport.use('local-signin', new LocalStrategy({
+  usernameField: 'username',
+  passwordField: 'password',
+  passReqToCallback: true},
+  function(req, username, password, done) {
+    funct.localAuth(username, password)
+      .then(function(user) {
+        if(user) {
+          console.log("LOGGED IN AS: " + user.username );
+          req.session.success = 'You are successfully logged in ' + user.username + '!';
+          
+          return done(null, user);
+        }
+      })
+      .fail(function(err) {
+        console.log(err.body);
+      })
+  }
+));
+
+passport.use('local-signup', new LocalStrategy({
+    usernameField: 'username',
+    passwordField: 'password',
+    passReqToCallback : true}, //allows us to pass back the request to the callback
+  function(req, username, password, done) {
+    funct.localReg(username, password)
+    .then(function (user) {
+      if (user) {
+        console.log("REGISTERED: " + user.username);
+        req.session.success = 'You are successfully registered and logged in ' + user.username + '!';
+        done(null, user);
+      }
+      if (!user) {
+        console.log("COULD NOT REGISTER");
+        req.session.error = 'That username is already in use, please try a different one.'; //inform user could not log them in
+        done(null, user);
+      }
+    })
+    .fail(function (err){
+      console.log(err.body);
+    });
+  }
+));
+passport.serializeUser(function(user, done) {
+  console.log("serializing " + user.username);
+  done(null, user);
+});
+
+passport.deserializeUser(function(obj, done) {
+  console.log("deserialing " + obj);
+  done(null, obj);
+});
+
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  console.log("hello " + req.user.username)
+  res.render('index', { user: req.user.username});
 });
 
-router.get('/newuser', function(req, res) {
-  res.render('newuser', { title: 'Add New User' })
-});
 
-router.post('/adduser', function(req, res) {
-  //Get our form values
-  var username = req.body.username;
-  var useremail = req.body.useremail;
- 
-  db.create({
-    name : username,
-    email : useremail
-  }, function (err, doc) {
-    if (err) {
-      res.send("Theres was a problem adding the information to the database ");
-    } else {
-      res.redirect("userlist");
-    }
-  });
-});
 
 router.post('/save', function(req, res, next) {
   var collection = db.get().collection('images');
@@ -43,6 +83,27 @@ router.post('/save', function(req, res, next) {
     }
   )
 })
+
+
+router.post('/login', passport.authenticate('local-signin'), function(req, res) {
+  console.log("Username" + req.user.username),
+  res.send({result: 'redirect', url: '/cms', user: req.user.username})
+ })
+
+ router.get('/register', function(req, res) {
+  res.render('register')
+})
+
+router.post('/register', passport.authenticate('local-signup'), function (req, res) {
+    res.redirect('/login')
+  });
+
+router.get('/logout', function(req,res) {
+  var name = req.user.username;
+  req.logout();
+  res.redirect('/login');
+  req.session.notice = "You have successfully logged out: " + name;
+}) 
 
 router.post('/delete', function(req, res) {
   var collection = db.get().collection('images');
@@ -62,7 +123,7 @@ var storage = multer.diskStorage({
   }
 });
 
-router.get('/uploads', function(req, res) {
+router.get('/uploads', ensureAuthenticated, function(req, res) {
   res.render('uploads');
 })
 
@@ -97,22 +158,39 @@ router.post('/images', upload, function(req, res, next) {
     });
   });
 
-router.get('/cms', function(req, res, next) {
+router.get('/cms', ensureAuthenticated, function(req, res, next) {
   var collection = db.get().collection('images')
+  var users = req.user.username;
   collection.find({}).toArray(function(err, docs) {
-    res.render('cms', {"cms" : docs});
+    res.render('cms', {
+      cms: docs, 
+      user: users
+      });
     });
   });
 
+router.get('/login', function(req, res) {
+  res.render('login')
+})
+
+
 router.get('/:id', function(req, res, next) {
   var collection = db.get().collection('images');
+  console.log(req.params.id)
   var r = req.url;
   var numId = r.split('=').pop()
   var uId = ObjectId(numId);
-  var ele = collection.findOne({"_id": uId}, function(err, doc) {
+  var ele = collection.findOne({"_id": uId }, function(err, doc) {
     res.json(doc)
     res.end();
   })
 })
+
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) { return next(); }
+  req.session.error = 'Please sign in!';
+  res.redirect('/login');
+}
+
 
 module.exports = router;

@@ -7,7 +7,7 @@ body {
 }
 .head {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 180px 1fr 180px;
   grid-template-rows: repeat(2, 1fr);
   grid-gap: 10px;
   background-color: grey;
@@ -22,7 +22,8 @@ body {
   margin: 0;
   text-align: center;
   width: auto;
-  height: 40px
+  height: 40px;
+  font-size: 3em;
 }
 
 .head__nav {
@@ -30,10 +31,11 @@ body {
   grid-column: 2 / span 1;
   display: grid;
   grid-template-columns: repeat(4, 160px);
-  grid-template-rows: 1fr;
+  grid-template-rows: 40px;
   padding-top: 40px;
   padding-bottom: 5px;
   align-items: center;
+  justify-content: center;
   grid-gap: 10px;
   }
 
@@ -53,17 +55,49 @@ body {
   grid-column: 4 / span 1;
 }
 
+.head__subnav {
+  grid-column: 1 / 1;
+  grid-row: 2 / 2;
+  display: grid;
+  grid-gap: 4px;
+  grid-template-columns: 150px;
+  grid-template-rows: 30px 30px;
+  padding-top: 40px;
+  align-items: center;
+  justify-content: center;
+
+}
+.head__subnav-user {
+  grid-row: 1 / 1;
+  padding-top: 10px;
+  font-size: 1em;
+  padding-right: 15px;
+  padding-left: 10px;
+}
+
+.head__subnav-logout {
+  grid-row: 2 / 2;
+  padding-top: 10px;
+  font-size: 1em;
+  text-decoration: none;
+  text-align: left;
+  padding: 5px 0px 5px 10px;
+  margin: 0px 250px 0px 0px
+}
+
 .head__nav--link {
   text-decoration: none;
   border: 1px dashed #fff;
   padding: 5px 10px;
-  margin-left: 30px;
-  margin-right: 30px;
+  margin-left: 20px;
+  margin-right: 20px;
   text-align: center;
+  color: black;
 }
 
 .head__nav--link:hover {
   box-shadow: 1px 2px 2px 1px black;
+  color: black;
 }
 
 .container {
@@ -174,7 +208,9 @@ textarea {
   box-shadow: .5px .5px 1px .5px;
 }
 
- 
+.card__box:hover {
+  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.2), 0 6px 30px 0 rgba(0, 0, 0, 0.19);
+}
 
 
 

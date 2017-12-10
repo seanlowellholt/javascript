@@ -6,8 +6,13 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var db = require('./db');
 var mongo = require('mongodb');
-var stylus = require('stylus')
-
+var stylus = require('stylus');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+var flash   = require('connect-flash');
+var morgan  = require('morgan');
+var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -20,6 +25,43 @@ app.set('view engine', 'pug');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+//app.use(morgan('dev'));
+
+app.use(session({
+  store: new MongoStore({
+    url: 'mongodb://seanlholt:rexam12oz@ds141454.mlab.com:41454/seanlholt'
+  }),
+  secret: 'keyboard car', 
+  name: 'test',
+  resave: true, 
+  saveUninitialized: true}));
+app.use(passport.initialize());
+app.use(passport.session({
+  secret: 'keyboard car',
+  name: 'test',
+  resave: true,
+  saveUninitialized: true
+}));
+app.use(function(req, res, next) {
+  var err = req.session.error,
+      msg = req.session.notice,
+      success = req.session.success;
+
+  delete req.session.error;
+  delete req.session.notice;
+  delete req.session.success;
+
+  if (err) res.locals.error = err;
+  if (msg) res.locals.notice = msg;
+  if (success) res.locals.success = success;
+
+  next()
+
+})
+
+
+
+app.use(flash());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
