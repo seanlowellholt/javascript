@@ -18,6 +18,7 @@ $(document).ready(function(event) {
       'password': id_password
     },
     success: function(response){
+      console.log(response)
       if(response.result == 'redirect') {
       window.location.replace(response.url)  
       var username = response.user;

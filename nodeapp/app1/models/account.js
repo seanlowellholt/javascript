@@ -7,12 +7,12 @@ exports.localReg = function(username, password) {
 
 
   var collection = db.get().collection('localusers')
-  console.log(collection)
+  
   //var user = ObjectID(username);
   collection.findOne({'username': username})
     .then(function(result) {
       if(null != result) {
-        console.log('USERNAME ALREADY EXISt:', result.username);
+        console.log('USERNAME ALREADY EXIST:', result.username);
         deferred.resolve(false);
       } else {
         var hash = bcrypt.hashSync(password, 8);

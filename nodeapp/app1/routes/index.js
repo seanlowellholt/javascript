@@ -6,72 +6,15 @@ var im = require('imagemagick');
 var path = require('path');
 var fs = require('fs');
 var ObjectId = require('mongodb').ObjectId;
-var passport = require('passport');
+var passport = require('../models/passports');
 var LocalStrategy = require('passport-local').Strategy;
-
-var funct = require('../models/account')
-
-passport.use('local-signin', new LocalStrategy({
-  usernameField: 'username',
-  passwordField: 'password',
-  passReqToCallback: true},
-  function(req, username, password, done) {
-    funct.localAuth(username, password)
-      .then(function(user) {
-        if(user) {
-          console.log("LOGGED IN AS: " + user.username );
-          req.session.success = 'You are successfully logged in ' + user.username + '!';
-          
-          return done(null, user);
-        }
-      })
-      .fail(function(err) {
-        console.log(err.body);
-      })
-  }
-));
-
-passport.use('local-signup', new LocalStrategy({
-    usernameField: 'username',
-    passwordField: 'password',
-    passReqToCallback : true}, //allows us to pass back the request to the callback
-  function(req, username, password, done) {
-    funct.localReg(username, password)
-    .then(function (user) {
-      if (user) {
-        console.log("REGISTERED: " + user.username);
-        req.session.success = 'You are successfully registered and logged in ' + user.username + '!';
-        done(null, user);
-      }
-      if (!user) {
-        console.log("COULD NOT REGISTER");
-        req.session.error = 'That username is already in use, please try a different one.'; //inform user could not log them in
-        done(null, user);
-      }
-    })
-    .fail(function (err){
-      console.log(err.body);
-    });
-  }
-));
-passport.serializeUser(function(user, done) {
-  console.log("serializing " + user.username);
-  done(null, user);
-});
-
-passport.deserializeUser(function(obj, done) {
-  console.log("deserialing " + obj);
-  done(null, obj);
-});
-
+var url = require('url');
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', ensureAuthenticated, function(req, res, next) {
   console.log("hello " + req.user.username)
   res.render('index', { user: req.user.username});
 });
-
-
 
 router.post('/save', function(req, res, next) {
   var collection = db.get().collection('images');
@@ -84,11 +27,16 @@ router.post('/save', function(req, res, next) {
   )
 })
 
-
 router.post('/login', passport.authenticate('local-signin'), function(req, res) {
   console.log("Username" + req.user.username),
-  res.send({result: 'redirect', url: '/cms', user: req.user.username})
- })
+  res.send({
+    result: 'redirect',
+    url: '/cms', 
+    user: req.user.username
+    })
+  })
+
+
 
  router.get('/register', function(req, res) {
   res.render('register')
@@ -140,7 +88,8 @@ router.post('/images', upload, function(req, res, next) {
     var srcfile = './public/uploads/' + imageName;
     var destfile = './public/uploads/thumbs/' + 'small ' + '-' + imageName;
     var readFile = destfile.split("/").pop();
-
+    var pathname = url.parse(req.file.originalname).pathname;
+    console.log(pathname)
     // Convert uploaded image to thumbnail
     Jimp.read( srcfile, function(err, img) {
       img.scaleToFit(250, Jimp.AUTO, Jimp.RESIZE_BEZIER)
@@ -173,11 +122,17 @@ router.get('/login', function(req, res) {
   res.render('login')
 })
 
+router.get('/controller', ensureAuthenticated, function(req, res) {
+  res.render('controller')
+})
 
 router.get('/:id', function(req, res, next) {
   var collection = db.get().collection('images');
-  console.log(req.params.id)
+  //console.log(req.params.id)
+  var pathname = url.parse(req.url).query;
+  console.log("This is the id path " + pathname)
   var r = req.url;
+  console.log("another " + r)
   var numId = r.split('=').pop()
   var uId = ObjectId(numId);
   var ele = collection.findOne({"_id": uId }, function(err, doc) {
@@ -186,9 +141,11 @@ router.get('/:id', function(req, res, next) {
   })
 })
 
+
+
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) { return next(); }
-  req.session.error = 'Please sign in!';
+  
   res.redirect('/login');
 }
 

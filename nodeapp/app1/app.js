@@ -40,7 +40,8 @@ app.use(passport.session({
   secret: 'keyboard car',
   name: 'test',
   resave: true,
-  saveUninitialized: true
+  saveUninitialized: true,
+  cookie: {secure: false}
 }));
 app.use(function(req, res, next) {
   var err = req.session.error,
